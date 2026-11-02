@@ -217,6 +217,24 @@ export const portfolioData = {
         "Mendesain banner untuk kebutuhan akademik, seperti ujian skripsi dan sidang.",
         "Menyesuaikan warna, pencahayaan, komposisi, dan tata letak sesuai konsep desain.",
         "Mempublikasikan hasil karya fotografi melalui Instagram @nilensco."
+      ],
+      images: [
+        {
+          src: "/images/experience/nilensco-graduation-photography.jpg",
+          alt: "NiLensCo Graduation Photography - Portofolio Fotografi Wisuda",
+          title: "Graduation Photography (@nilensco)",
+          caption: "Karya Fotografi Wisuda NiLensCo",
+          description: "Karya pemotretan dan sesi dokumentasi wisuda (Graduation Photography) oleh NiLensCo (@nilensco). Mencakup komposisi potret estetik, arahan gaya, serta color grading & photo retouching profesional.",
+          type: "image"
+        },
+        {
+          src: "/images/experience/nilensco-banner-designs.jpg",
+          alt: "Banner Designs - Portofolio Desain Grafis Banner Sidang & Wisuda",
+          title: "Banner Designs Akademik & Sidang",
+          caption: "Desain Banner Sidang & Kelulusan",
+          description: "Koleksi perancangan desain grafis banner perayaan kelulusan dan ujian sidang diploma/sarjana. Menghadirkan konsep visual kreatif seperti kartu identitas personal, surat izin sidang, dan kolase foto estetik.",
+          type: "image"
+        }
       ]
     }
   ] as ExperienceItem[],
