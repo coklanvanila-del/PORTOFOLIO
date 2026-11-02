@@ -1,6 +1,7 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
+import Image from "next/image";
 import {
   Flame,
   Sparkles,
@@ -10,8 +11,15 @@ import {
   ExternalLink,
   Tag,
   Building,
+  Image as ImageIcon,
+  ZoomIn,
+  X,
+  ChevronLeft,
+  ChevronRight,
+  Maximize2,
+  Play,
 } from "lucide-react";
-import { portfolioData, ExperienceItem } from "@/data/portfolioData";
+import { portfolioData, ExperienceItem, ExperienceImage } from "@/data/portfolioData";
 import { SectionHeader } from "./SectionHeader";
 
 const experienceIcons = {
@@ -28,6 +36,82 @@ const categoryBadgeColors = {
 
 export const Experience: React.FC = () => {
   const { experiences } = portfolioData;
+
+  // Lightbox Modal state
+  const [activeGallery, setActiveGallery] = useState<{
+    images: ExperienceImage[];
+    currentIndex: number;
+    title: string;
+  } | null>(null);
+
+  // Keyboard navigation for lightbox
+  useEffect(() => {
+    if (!activeGallery) return;
+
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setActiveGallery(null);
+      } else if (e.key === "ArrowLeft") {
+        setActiveGallery((prev) =>
+          prev
+            ? {
+                ...prev,
+                currentIndex:
+                  (prev.currentIndex - 1 + prev.images.length) %
+                  prev.images.length,
+              }
+            : null
+        );
+      } else if (e.key === "ArrowRight") {
+        setActiveGallery((prev) =>
+          prev
+            ? {
+                ...prev,
+                currentIndex: (prev.currentIndex + 1) % prev.images.length,
+              }
+            : null
+        );
+      }
+    };
+
+    document.body.style.overflow = "hidden";
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      document.body.style.overflow = "unset";
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [activeGallery]);
+
+  const openLightbox = (
+    images: ExperienceImage[],
+    index: number,
+    title: string
+  ) => {
+    setActiveGallery({
+      images,
+      currentIndex: index,
+      title,
+    });
+  };
+
+  const nextImage = () => {
+    if (!activeGallery) return;
+    setActiveGallery({
+      ...activeGallery,
+      currentIndex: (activeGallery.currentIndex + 1) % activeGallery.images.length,
+    });
+  };
+
+  const prevImage = () => {
+    if (!activeGallery) return;
+    setActiveGallery({
+      ...activeGallery,
+      currentIndex:
+        (activeGallery.currentIndex - 1 + activeGallery.images.length) %
+        activeGallery.images.length,
+    });
+  };
 
   return (
     <section id="pengalaman" className="py-20 md:py-28 bg-white/50 relative">
@@ -122,6 +206,80 @@ export const Experience: React.FC = () => {
                         ))}
                       </ul>
 
+                      {/* Photo / Media Documentation Section */}
+                      {exp.images && exp.images.length > 0 && (
+                        <div className="mt-5 pt-4 border-t border-brand-border-pink/40">
+                          <div className="flex items-center justify-between mb-3">
+                            <span className="inline-flex items-center gap-1.5 text-xs font-bold text-brand-charcoal tracking-wide">
+                              <ImageIcon className="w-3.5 h-3.5 text-brand-rose-pink" />
+                              <span>
+                                {exp.id === "pertamina-ep"
+                                  ? `Dokumentasi Lapangan & Bukti (${exp.images.length})`
+                                  : `Dokumentasi & Portofolio Karya (${exp.images.length})`}
+                              </span>
+                            </span>
+                            <span className="text-[11px] text-brand-muted-gray italic">
+                              Klik media untuk melihat
+                            </span>
+                          </div>
+
+                          <div className="grid grid-cols-2 gap-2.5 sm:gap-3">
+                            {exp.images.map((img, imgIdx) => (
+                              <button
+                                key={imgIdx}
+                                type="button"
+                                onClick={() => openLightbox(exp.images!, imgIdx, exp.role)}
+                                className="group/img relative rounded-2xl overflow-hidden border border-brand-border-pink/70 bg-brand-soft-pink/15 hover:border-brand-rose-pink hover:shadow-soft transition-all duration-200 text-left flex flex-col focus:outline-none focus:ring-2 focus:ring-brand-rose-pink/50 cursor-pointer"
+                              >
+                                <div className="relative w-full aspect-[4/3] bg-neutral-900 overflow-hidden">
+                                  {img.type === "video" ? (
+                                    <>
+                                      <video
+                                        src={`${img.src}#t=0.5`}
+                                        preload="metadata"
+                                        muted
+                                        playsInline
+                                        className="w-full h-full object-cover pointer-events-none group-hover/img:scale-105 transition-transform duration-300"
+                                      />
+                                      <div className="absolute inset-0 bg-black/35 group-hover/img:bg-black/50 transition-colors flex items-center justify-center">
+                                        <div className="w-10 h-10 rounded-full bg-brand-rose-pink text-white flex items-center justify-center shadow-lg group-hover/img:scale-110 transition-transform">
+                                          <Play className="w-5 h-5 fill-white ml-0.5" />
+                                        </div>
+                                      </div>
+                                      <span className="absolute top-2 left-2 px-2 py-0.5 rounded-full bg-black/75 text-white text-[10px] font-semibold flex items-center gap-1 backdrop-blur-xs border border-white/20">
+                                        <Play className="w-2.5 h-2.5 fill-white" />
+                                        Video
+                                      </span>
+                                    </>
+                                  ) : (
+                                    <>
+                                      <Image
+                                        src={img.src}
+                                        alt={img.alt}
+                                        fill
+                                        sizes="(max-width: 768px) 50vw, 25vw"
+                                        className="object-cover object-top transition-transform duration-300 group-hover/img:scale-105"
+                                      />
+                                      <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/10 to-transparent opacity-0 group-hover/img:opacity-100 transition-opacity duration-200 flex items-center justify-center">
+                                        <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-white/95 text-brand-charcoal text-[11px] font-semibold shadow-sm backdrop-blur-xs">
+                                          <ZoomIn className="w-3 h-3 text-brand-rose-pink" />
+                                          Perbesar
+                                        </span>
+                                      </div>
+                                    </>
+                                  )}
+                                </div>
+                                <div className="p-2 sm:p-2.5 bg-white flex-1 flex flex-col justify-center">
+                                  <p className="text-[11px] font-semibold text-brand-charcoal line-clamp-1 leading-tight group-hover/img:text-brand-rose-pink transition-colors">
+                                    {img.title || img.caption}
+                                  </p>
+                                </div>
+                              </button>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+
                       {/* Instagram link for freelance */}
                       {exp.id === "freelance-creative" && (
                         <div className="mt-4 pt-3 border-t border-brand-border-pink/40 flex items-center justify-between text-xs">
@@ -148,6 +306,161 @@ export const Experience: React.FC = () => {
         </div>
 
       </div>
+
+      {/* Lightbox Modal */}
+      {activeGallery && (
+        <div
+          className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-brand-charcoal/85 backdrop-blur-md transition-opacity duration-300"
+          onClick={() => setActiveGallery(null)}
+          role="dialog"
+          aria-modal="true"
+        >
+          {/* Modal Container */}
+          <div
+            className="relative w-full max-w-4xl bg-white rounded-3xl shadow-2xl overflow-hidden border border-brand-border-pink flex flex-col max-h-[92vh]"
+            onClick={(e) => e.stopPropagation()}
+          >
+            {/* Modal Header */}
+            <div className="flex items-center justify-between px-5 py-3.5 border-b border-brand-border-pink/60 bg-brand-soft-pink-light">
+              <div className="flex items-center gap-2">
+                <span className="px-2.5 py-0.5 rounded-full text-xs font-bold bg-brand-rose-pink text-white">
+                  {activeGallery.currentIndex + 1} / {activeGallery.images.length}
+                </span>
+                <span className="text-xs sm:text-sm font-semibold text-brand-charcoal line-clamp-1">
+                  {activeGallery.images[activeGallery.currentIndex]?.title ||
+                    activeGallery.title}
+                </span>
+              </div>
+
+              <div className="flex items-center gap-2">
+                <a
+                  href={activeGallery.images[activeGallery.currentIndex]?.src}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="p-1.5 rounded-full text-brand-muted-gray hover:text-brand-charcoal hover:bg-white/80 transition-colors"
+                  title="Buka media ukuran penuh di tab baru"
+                >
+                  <Maximize2 className="w-4 h-4" />
+                </a>
+                <button
+                  type="button"
+                  onClick={() => setActiveGallery(null)}
+                  className="p-1.5 rounded-full text-brand-muted-gray hover:text-brand-charcoal hover:bg-white/80 transition-colors"
+                  aria-label="Tutup"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+            </div>
+
+            {/* Modal Image / Video Area */}
+            <div className="relative flex-1 bg-neutral-900 flex items-center justify-center min-h-[300px] sm:min-h-[460px] p-2 sm:p-4 overflow-hidden">
+              <div className="relative w-full h-[52vh] sm:h-[60vh] flex items-center justify-center">
+                {activeGallery.images[activeGallery.currentIndex]?.type === "video" ? (
+                  <video
+                    key={activeGallery.images[activeGallery.currentIndex]?.src}
+                    src={activeGallery.images[activeGallery.currentIndex]?.src}
+                    controls
+                    autoPlay
+                    playsInline
+                    className="max-h-[52vh] sm:max-h-[60vh] max-w-full rounded-xl shadow-2xl object-contain bg-black"
+                  />
+                ) : (
+                  <Image
+                    src={activeGallery.images[activeGallery.currentIndex]?.src || ""}
+                    alt={activeGallery.images[activeGallery.currentIndex]?.alt || ""}
+                    fill
+                    sizes="(max-width: 1200px) 90vw, 1000px"
+                    className="object-contain"
+                    priority
+                  />
+                )}
+              </div>
+
+              {/* Prev Button */}
+              {activeGallery.images.length > 1 && (
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    prevImage();
+                  }}
+                  className="absolute left-3 top-1/2 -translate-y-1/2 p-2.5 rounded-full bg-black/50 hover:bg-brand-rose-pink text-white backdrop-blur-xs transition-colors shadow-md z-10"
+                  aria-label="Media sebelumnya"
+                >
+                  <ChevronLeft className="w-5 h-5" />
+                </button>
+              )}
+
+              {/* Next Button */}
+              {activeGallery.images.length > 1 && (
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    nextImage();
+                  }}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 p-2.5 rounded-full bg-black/50 hover:bg-brand-rose-pink text-white backdrop-blur-xs transition-colors shadow-md z-10"
+                  aria-label="Media selanjutnya"
+                >
+                  <ChevronRight className="w-5 h-5" />
+                </button>
+              )}
+            </div>
+
+            {/* Modal Caption & Details */}
+            <div className="p-4 sm:p-5 bg-white border-t border-brand-border-pink/60">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                <div>
+                  <h4 className="font-bold text-sm sm:text-base text-brand-charcoal">
+                    {activeGallery.images[activeGallery.currentIndex]?.caption}
+                  </h4>
+                  {activeGallery.images[activeGallery.currentIndex]?.description && (
+                    <p className="text-xs sm:text-sm text-brand-muted-gray mt-0.5 leading-relaxed">
+                      {activeGallery.images[activeGallery.currentIndex]?.description}
+                    </p>
+                  )}
+                </div>
+
+                {/* Thumbnails Navigator */}
+                <div className="flex items-center gap-2 shrink-0 overflow-x-auto py-1">
+                  {activeGallery.images.map((img, idx) => (
+                    <button
+                      key={idx}
+                      type="button"
+                      onClick={() =>
+                        setActiveGallery((prev) =>
+                          prev ? { ...prev, currentIndex: idx } : null
+                        )
+                      }
+                      className={`relative w-12 h-12 rounded-lg overflow-hidden border-2 transition-all ${
+                        activeGallery.currentIndex === idx
+                          ? "border-brand-rose-pink ring-2 ring-brand-rose-pink/30 scale-105"
+                          : "border-transparent opacity-60 hover:opacity-100"
+                      }`}
+                    >
+                      {img.type === "video" ? (
+                        <div className="w-full h-full bg-neutral-900 flex items-center justify-center text-brand-rose-pink">
+                          <Play className="w-4 h-4 fill-brand-rose-pink" />
+                        </div>
+                      ) : (
+                        <Image
+                          src={img.src}
+                          alt={img.alt}
+                          fill
+                          sizes="48px"
+                          className="object-cover"
+                        />
+                      )}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      )}
     </section>
   );
 };

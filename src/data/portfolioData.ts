@@ -1,3 +1,12 @@
+export interface ExperienceImage {
+  src: string;
+  alt: string;
+  caption: string;
+  title?: string;
+  description?: string;
+  type?: 'image' | 'video';
+}
+
 export interface ExperienceItem {
   id: string;
   role: string;
@@ -7,6 +16,7 @@ export interface ExperienceItem {
   program?: string;
   description: string[];
   iconType: 'oil' | 'creative' | 'camera';
+  images?: ExperienceImage[];
 }
 
 export interface EducationItem {
@@ -114,6 +124,36 @@ export const portfolioData = {
         "Terlibat langsung dalam pemantauan kegiatan operasional produksi harian.",
         "Melakukan pencatatan dan pengelolaan data produksi minyak dan gas secara akurat.",
         "Menerapkan standar Kesehatan, Keselamatan Kerja, dan Lingkungan (K3L) dalam kegiatan operasional migas."
+      ],
+      images: [
+        {
+          src: "/images/experience/pertamina-surat-magang.png",
+          alt: "Surat Keterangan Magang SKK Migas PT Pertamina EP Cepu No. 1009/PPC62330/2024-S8",
+          title: "Surat Keterangan Magang Resmi",
+          caption: "Surat Keterangan Magang PT Pertamina EP Cepu",
+          description: "Sertifikat / Surat Keterangan resmi pelaksanaan Program Magang di Produksi Field Cepu – Zona 11 PT Pertamina EP Cepu No. 1009/PPC62330/2024-S8 (1 – 30 September 2024)."
+        },
+        {
+          src: "/images/experience/pertamina-spu.jpg",
+          alt: "Dokumentasi di Stasiun Pengumpul Utama PT Pertamina Asset 4 Cepu Field",
+          title: "Stasiun Pengumpul Utama (SPU)",
+          caption: "Stasiun Pengumpul Utama Cepu Field",
+          description: "Observasi operasional dan fasilitas lapangan di Stasiun Pengumpul Utama PT Pertamina Asset 4 Cepu Field menggunakan APD lengkap."
+        },
+        {
+          src: "/images/experience/pertamina-pompa-angguk.jpg",
+          alt: "Inspeksi Lapangan di depan Unit Pompa Angguk Thomassen Bd",
+          title: "Unit Pompa Angguk (Pumping Unit)",
+          caption: "Inspeksi Unit Pompa Angguk Lapangan Migas",
+          description: "Inspeksi lapangan di area sumur produksi migas dengan unit pompa angguk (beam pumping unit Thomassen Bd)."
+        },
+        {
+          src: "/images/experience/pertamina-lab.jpg",
+          alt: "Pengujian dan Analisis Sampel di Laboratorium Produksi Pertamina EP",
+          title: "Analisis Laboratorium Migas",
+          caption: "Pengujian & Analisis Sampel di Laboratorium",
+          description: "Pengujian dan analisis kualitas fluida/air formasi menggunakan peralatan laboratorium untuk mendukung kendali mutu produksi migas."
+        }
       ]
     },
     {
@@ -128,6 +168,40 @@ export const portfolioData = {
         "Mendesain poster, infografis, dan spanduk desa menggunakan Canva dan Teknologi AI.",
         "Memproduksi video profil desa, Posyandu, dan video edukasi menggunakan Teknologi AI dan CapCut.",
         "Mendukung digitalisasi informasi desa untuk meningkatkan penyampaian informasi kepada masyarakat."
+      ],
+      images: [
+        {
+          src: "/images/experience/desa-sertifikat-magang.jpg",
+          alt: "Sertifikat Magang Desa Negeri Lama - Indy Rahmawati Assel",
+          title: "Sertifikat Magang Resmi",
+          caption: "Sertifikat Magang Kantor Desa Negeri Lama",
+          description: "Sertifikat penghargaan resmi atas dedikasi dan kontribusi selama proses pemagangan di Kantor Desa Negeri Lama, Kecamatan Baguala, Kota Ambon (Diterbitkan 23 Oktober 2026).",
+          type: "image"
+        },
+        {
+          src: "/images/experience/desa-dokumentasi-kegiatan.jpg",
+          alt: "Dokumentasi Kegiatan dan Penyerahan Sertifikat Magang Desa Negeri Lama",
+          title: "Dokumentasi Kegiatan & Penutupan",
+          caption: "Dokumentasi Penyerahan Sertifikat Magang",
+          description: "Momen penyerahan sertifikat magang dan sesi foto bersama Kepala Desa Negeri Lama, staf kantor desa, serta rekan peserta magang.",
+          type: "image"
+        },
+        {
+          src: "/images/experience/desa-monografi-infografis.jpg",
+          alt: "Desain Poster Infografis Monografi Desa Negeri Lama",
+          title: "Poster Infografis Monografi Desa",
+          caption: "Karya Desain Monografi Desa Negeri Lama",
+          description: "Desain poster infografis publikasi komprehensif Monografi Desa Negeri Lama yang memuat Profil Desa, Visi Misi, Data Kependudukan, Peta Wilayah RT/RW, dan Fasilitas Desa.",
+          type: "image"
+        },
+        {
+          src: "/images/experience/desa-video-profil.mp4",
+          alt: "Video Profil dan Konten Digital Kreatif Desa Negeri Lama",
+          title: "Video Profil Desa (AI & CapCut)",
+          caption: "Video Profil & Edukasi Desa Negeri Lama",
+          description: "Produksi video profil dan konten edukasi desa memanfaatkan teknologi AI dan CapCut sebagai wujud digitalisasi komunikasi publik dan profil wilayah Desa Negeri Lama.",
+          type: "video"
+        }
       ]
     },
     {
