@@ -1,0 +1,67 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --color-bg: #FDF8FA;
+    --color-soft-pink: #F8DDE8;
+    --color-rose-pink: #D987AA;
+    --color-dusty-pink: #C77D9A;
+    --color-charcoal: #30232B;
+    --color-muted-gray: #777078;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    background-color: #FDF8FA;
+    color: #30232B;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  ::selection {
+    background-color: #F8DDE8;
+    color: #30232B;
+  }
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 9px;
+}
+
+::-webkit-scrollbar-track {
+  background: #FDF8FA;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #E8BFD0;
+  border-radius: 9999px;
+  border: 2px solid #FDF8FA;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #D987AA;
+}
+
+/* Glassmorphism subtle utilities */
+.glass-card {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(248, 221, 232, 0.7);
+}
+
+.glass-navbar {
+  background: rgba(253, 248, 250, 0.88);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid rgba(243, 211, 226, 0.5);
+}
+
+/* Editorial badge styling */
+.editorial-badge {
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
